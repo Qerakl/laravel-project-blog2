@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -62,7 +63,7 @@ class UserController extends Controller
             }
             return redirect('/');
         }
-        
+
         return back()->withErrors([
             'email' => 'Неверный логин или пароль',
         ])->onlyInput('email');
@@ -87,7 +88,7 @@ class UserController extends Controller
             'email' => ['required', 'email'],
         ]);
         $id = session('user.id');
-        if(empty($request->img)){
+        if(empty($request->avatar)){
             User::where('id', $id)->update([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -99,18 +100,28 @@ class UserController extends Controller
             }
             return redirect('/');
         }
-        /*$posts = User::where('id', $id)->get();
-        foreach($posts as $post){
-            Storage::delete('public/'.$post->img);
+        $users = User::where('id', $id)->get();
+        foreach($users as $user){
+            if($user->avatar == "avatar.png"){
+                $avatar = $request->file('avatar')->store('public');
+                $avatar = $request->avatar->hashName();
+                User::where('id', $id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'avatar' => $avatar
+                ]);
+            return redirect('/');
+            }
+            Storage::delete('public/'.$user->avatar);
         }
-        $img = $request->file('img')->store('public');
-        $img = $request->img->hashName();
+        $avatar = $request->file('avatar')->store('public');
+        $avatar = $request->avatar->hashName();
         User::where('id', $id)->update([
-            'title' => $title,
-            'content' => $content,
-            'img' => $img
+            'name' => $request->name,
+            'email' => $request->email,
+            'avatar' => $avatar
         ]);
-        return redirect('/');*/
+        return redirect('/');
     }
     public function password_update(Request $request){
         $credentials = $request->validate([

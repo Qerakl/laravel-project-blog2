@@ -1,37 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Статьи -->
+    <!-- Посты -->
     <div class="container py-5">
-        <div class="row">
-            @foreach($posts as $post)
-            <div class="col-md-4 d-flex align-items-stretch">
-                <div class="card mb-4 shadow-sm h-100">
-                    <img src="{{ asset('storage/'. $post->img) }}" class="card-img-top" alt="{{ $post->title }}">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ $post->title }}</h5>
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <small class="text-muted">{{ $post->created_at->format('d M Y') }}</small>
-                                <a href="{{ url('post', $post->id) }}" class="btn btn-primary btn-sm">Читать далее</a>
-                            </div>
-                            
-                            @if (Auth::check() && Auth::user()->id == $post->user_id)
-                            <div class="d-flex justify-content-end">
-                                <a href="{{ url('post/edit', $post->id) }}" class="btn btn-outline-secondary btn-sm me-2">Изменить</a>
-                                <form action="{{ route('post.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить этот пост?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">Удалить</button>
-                                </form>
-                            </div>
-                            @endif
+        @foreach($posts as $post)
+        <div class="post mb-4" style="max-width: 650px; margin: 0 auto;">
+            <div class="card post-card shadow-sm border-0">
+                <div class="card-body p-3">
+                    <!-- Верхняя часть поста с аватаркой и именем пользователя -->
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ asset('storage/' ) }}" class="rounded-circle me-3" alt="avatar" width="50" height="50">
+                        <div>
+                            <h6 class="mb-0 fw-bold">{{ $post->user_id }}</h6>
+                            <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
                         </div>
+                    </div>
+
+                    <!-- Изображение поста -->
+                    @if($post->img)
+                    <div class="post-image mb-3">
+                        <img src="{{ asset('storage/'. $post->img) }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover; width: 100%;" alt="{{ $post->title }}">
+                    </div>
+                    @endif
+
+                    <!-- Заголовок и текст поста -->
+                    <h6 class="card-title mb-2">{{ $post->title }}</h6>
+                    <p class="card-text">{{ Str::limit($post->content, 200, '...') }}</p>
+
+                    <!-- Лайки и комментарии, социальные действия -->
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-outline-primary me-2">
+                                <i class="far fa-heart"></i> Лайк ({{ $post->likes_count }})
+                            </button>
+                            <a href="{{ url('post', $post->id) }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="far fa-comment"></i> Комментарии ({{ $post->comments_count }})
+                            </a>
+                        </div>
+
+                        <!-- Действия для автора поста -->
+                        @if (Auth::check() && Auth::user()->id == $post->user_id)
+                        <div class="d-flex align-items-center">
+                            <a href="{{ url('post/edit', $post->id) }}" class="btn btn-sm btn-outline-secondary me-2">Изменить</a>
+                            <form action="{{ route('post.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить этот пост?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                            </form>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
-            @endforeach
         </div>
-
+        @endforeach
     </div>
 @endsection

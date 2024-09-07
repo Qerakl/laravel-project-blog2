@@ -17,14 +17,12 @@
                 <div class="card p-4 shadow-sm">
                     <h2 class="text-center mb-4">Профиль</h2>
 
-                    
 
-                    <div class="text-center mb-4">
-                        <img alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
-                    </div>
                     @foreach ($users as $user)
-                        
-                    @endforeach
+                    <div class="text-center mb-4">
+                        <img src="{{asset('storage/' . $user->avatar)}}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+
                     <form method="POST" action="profile/update" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mb-3">
@@ -37,10 +35,11 @@
                         </div>
                         <div class="form-group mb-4">
                             <label for="profileImage" class="form-label">Изображение профиля</label>
-                            <input type="file" name="profile_image" class="form-control" id="profileImage">
+                            <input type="file" name="avatar" class="form-control" id="profileImage">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
                     </form>
+                    @endforeach
                 </div>
             </div>
 
@@ -48,7 +47,7 @@
             <div class="col-md-8">
                 <div class="card p-4 shadow-sm">
                     <h2 class="text-center mb-4">Изменить пароль</h2>
-                    
+
                     <form method="POST" action="profile/password-update">
                         @csrf
                         <div class="form-group mb-3">
