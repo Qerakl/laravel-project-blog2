@@ -13,7 +13,6 @@ class CommentController extends Controller
         ]);
         Comment::create([
             'user_id' => session('user.id'),
-            'user_name' => session('user.name'),
             'post_id' => $request->id,
             'content' => $request->content
         ]);
@@ -21,7 +20,10 @@ class CommentController extends Controller
     }
     public function edit(Request $requset){
         $comments = Comment::where('id', $requset->id)->get();
-        return view('updateComment', ['comments' => $comments]);
+        foreach ($comments as $comment){
+            $users = Comment::where('id', $comment->user_id)->get();
+        }
+        return view('updateComment', ['comments' => $comments, 'users' => $users]);
     }
     public function update(Request $request){
         $credentials = $request->validate([

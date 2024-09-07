@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'avatar',
         'password',
     ];
 
@@ -45,5 +46,5 @@ class User extends Authenticatable
         $user = User::where('email', $email)->get();
         return $user;
     }
-    
+
 }

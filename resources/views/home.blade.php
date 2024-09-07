@@ -8,13 +8,15 @@
             <div class="card post-card shadow-sm border-0">
                 <div class="card-body p-3">
                     <!-- Верхняя часть поста с аватаркой и именем пользователя -->
+                    @foreach($users as $user)
                     <div class="d-flex align-items-center mb-3">
-                        <img src="{{ asset('storage/' ) }}" class="rounded-circle me-3" alt="avatar" width="50" height="50">
+                        <img src="{{ asset('storage/'. $user->avatar ) }}" class="rounded-circle me-3" alt="avatar" width="80" height="70">
                         <div>
-                            <h6 class="mb-0 fw-bold">{{ $post->user_id }}</h6>
+                            <h6 class="mb-0 fw-bold">{{ $user->name }}</h6>
                             <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>
                         </div>
                     </div>
+                    @endforeach
 
                     <!-- Изображение поста -->
                     @if($post->img)

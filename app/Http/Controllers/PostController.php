@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,8 +22,13 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->get();
-
-        return view('home', ['posts' => $posts]);
+        foreach ($posts as $post){
+            $users = User::where('id', $post->user_id)->get();
+        }
+        if(empty($users)){
+            return view('home', ['posts' => $posts]);
+        }
+        return view('home', ['posts' => $posts,'users'=> $users]);
     }
 
     /**

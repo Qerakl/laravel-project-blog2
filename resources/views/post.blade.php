@@ -27,9 +27,10 @@
 
         <div class="comment mt-5">
             @foreach ($comments as $comment)
+                @foreach($users as $user)
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $comment->user_name }}</h5>
+                        <h5 class="card-title">{{ $user->name }}</h5>
                         <p class="card-text">{{ $comment->content }}</p>
                         @if(session('user.id') == $comment->user_id)
                         <div class="d-flex justify-content-end">
@@ -43,6 +44,7 @@
                         @endif
                     </div>
                 </div>
+                @endforeach
             @endforeach
         </div>
     </div>
