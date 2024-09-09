@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->string('img')->nullable();
             $table->string('content');
+            $table->unsignedInteger('likes_count')->default(0); // Количество лайков
+            $table->unsignedInteger('comments_count')->default(0); // Количество комментариев
             $table->timestamps();
         });
     }

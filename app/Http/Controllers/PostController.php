@@ -64,7 +64,16 @@ class PostController extends Controller
     {
         $post = $this->post->select_post($id);
         $comments = Comment::where('post_id', $id)->get();
-        return view('post', ['posts'=> $post, 'comments' => $comments]);
+        foreach ($comments as $comment){
+        }
+        if(Comment::where('post_id', $id)->exists()){
+            $users = User::where('id', $comment->user_id)->get();
+            return view('post', ['posts'=> $post, 'comments' => $comments, 'users' => $users]);
+        }
+        else{
+        $users = 1;
+        return view('post', ['posts'=> $post, 'comments' => $comments, 'users' => $users]);
+    }
     }
 
     /**

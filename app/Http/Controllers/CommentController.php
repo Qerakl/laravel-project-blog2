@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -13,10 +14,17 @@ class CommentController extends Controller
         ]);
         Comment::create([
             'user_id' => session('user.id'),
+            'user_name' => session('user.name'),
             'post_id' => $request->id,
             'content' => $request->content
         ]);
-        return redirect('/      ');
+        $posts = Post::where('id', $request->id)->get();
+        foreach ($posts as $post){
+            Post::where('id', $post->id)->update([
+                'comments_count' => $post->comments_count+1
+            ]);
+        }
+        return redirect('/');
     }
     public function edit(Request $requset){
         $comments = Comment::where('id', $requset->id)->get();
@@ -35,7 +43,18 @@ class CommentController extends Controller
         return redirect('/');
     }
     public function delete(Request $request){
+    $comments = Comment::where('id', $request->id)->get();
+    foreach ($comments as $comment){
+        $posts = Post::where('id', $comment->post_id)->get();
+        foreach ($posts as $post){
+            Post::where('id', $request->id)->update([
+                'comments_count' => $post->comments_count-1
+            ]);
+        }
+    }
+
         Comment::where('id', $request->id)->delete();
+
         return redirect('/');
     }
 }

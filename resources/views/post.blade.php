@@ -27,6 +27,7 @@
 
         <div class="comment mt-5">
             @foreach ($comments as $comment)
+                @if(!empty($users))
                 @foreach($users as $user)
                 <div class="card mb-3">
                     <div class="card-body">
@@ -45,6 +46,7 @@
                     </div>
                 </div>
                 @endforeach
+                @endif
             @endforeach
         </div>
     </div>

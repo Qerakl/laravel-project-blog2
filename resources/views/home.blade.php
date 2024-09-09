@@ -32,9 +32,9 @@
                     <!-- Лайки и комментарии, социальные действия -->
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div class="d-flex align-items-center">
-                            <button class="btn btn-sm btn-outline-primary me-2">
-                                <i class="far fa-heart"></i> Лайк ({{ $post->likes_count }})
-                            </button>
+                            <a href="{{ url('like', $post->id) }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="far fa-comment"></i> Лайки ({{ $post->likes_count }})
+                            </a>
                             <a href="{{ url('post', $post->id) }}" class="btn btn-sm btn-outline-secondary">
                                 <i class="far fa-comment"></i> Комментарии ({{ $post->comments_count }})
                             </a>
