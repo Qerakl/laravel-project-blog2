@@ -29,8 +29,9 @@ Route::post('login/user', [UserController::class, 'login']);
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return redirect('post');
-    }); 
-    Route::get('profile', [UserController::class, 'profile']); 
+    });
+    Route::get('profile/{id}', [UserController::class, 'profile']);
+    Route::get('profile/edit/{id}', [UserController::class, 'profile_edit']);
     Route::get('logout', [UserController::class, 'logout']);
     Route::post('profile/update', [UserController::class, 'update']);
     Route::post('profile/password-update', [UserController::class, 'password_update']);
@@ -39,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('comment/edit/{id}', [CommentController::class, 'edit']);
     Route::put('comment/update/{id}', [CommentController::class, 'update']);
     Route::delete('comment/delete/{id}', [CommentController::class, 'delete']);
-    
+
     Route::resource('post', PostController::class);
     Route::get('post/edit/{id}', [PostController::class, 'edit']);
 

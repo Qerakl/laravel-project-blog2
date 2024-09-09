@@ -3,67 +3,65 @@
 @section('content')
     <div class="container py-5">
         <div class="row">
-            <!-- Обновление профиля -->
-            @if ($errors->any())
-                        <div class="alert alert-danger mb-4">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+            <!-- Информация о пользователе -->
             <div class="col-md-4">
                 <div class="card p-4 shadow-sm">
-                    <h2 class="text-center mb-4">Профиль</h2>
-
+                    <h2 class="text-center mb-4">Профиль пользователя</h2>
 
                     @foreach ($users as $user)
                     <div class="text-center mb-4">
-                        <img src="{{asset('storage/' . $user->avatar)}}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                     </div>
 
-                    <form method="POST" action="profile/update" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group mb-3">
-                            <label for="profileName" class="form-label">Имя</label>
-                            <input type="text" name="name" class="form-control" id="profileName" value="{{ $user->name }}" placeholder="Введите ваше имя">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="profileEmail" class="form-label">Email адрес</label>
-                            <input type="email" name="email" class="form-control" id="profileEmail" value="{{ $user->email }}" placeholder="Введите ваш email">
-                        </div>
-                        <div class="form-group mb-4">
-                            <label for="profileImage" class="form-label">Изображение профиля</label>
-                            <input type="file" name="avatar" class="form-control" id="profileImage">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
-                    </form>
+                    <div class="mb-3">
+                        <h5 class="text-center">{{ $user->name }}</h5>
+                        <p class="text-center text-muted">{{ $user->email }}</p>
+                    </div>
+
+                    <!-- Дополнительная информация -->
+                    <div class="mb-3">
+                        <h6>О пользователе</h6>
+                        <p>{{ $user->bio ?? 'Информация не предоставлена' }}</p>
+                    </div>
                     @endforeach
                 </div>
             </div>
 
-            <!-- Изменение пароля -->
+            <!-- Посты пользователя -->
             <div class="col-md-8">
                 <div class="card p-4 shadow-sm">
-                    <h2 class="text-center mb-4">Изменить пароль</h2>
+                    <h2 class="text-center mb-4">Посты пользователя</h2>
 
-                    <form method="POST" action="profile/password-update">
-                        @csrf
-                        <div class="form-group mb-3">
-                            <label for="currentPassword" class="form-label">Текущий пароль</label>
-                            <input type="password" name="current_password" class="form-control" id="currentPassword" placeholder="Введите текущий пароль">
+                    @foreach ($posts as $post)
+                    <div class="post mb-4">
+                        <div class="card post-card shadow-sm border-0">
+                            <div class="card-body p-3">
+                                <!-- Изображение поста -->
+                                @if($post->img)
+                                <div class="post-image mb-3">
+                                    <img src="{{ asset('storage/' . $post->img) }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover; width: 100%;" alt="{{ $post->title }}">
+                                </div>
+                                @endif
+
+                                <!-- Заголовок и текст поста -->
+                                <h6 class="card-title mb-2">{{ $post->title }}</h6>
+                                <p class="card-text">{{ Str::limit($post->content, 200, '...') }}</p>
+
+                                <!-- Лайки и комментарии -->
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-sm btn-outline-primary me-2">
+                                            <i class="far fa-heart"></i> Лайк ({{ $post->likes_count }})
+                                        </button>
+                                        <a href="{{ url('post', $post->id) }}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="far fa-comment"></i> Комментарии ({{ $post->comments_count }})
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="newPassword" class="form-label">Новый пароль</label>
-                            <input type="password" name="new_password" class="form-control" id="newPassword" placeholder="Введите новый пароль">
-                        </div>
-                        <div class="form-group mb-4">
-                            <label for="confirmPassword" class="form-label">Подтвердите новый пароль</label>
-                            <input type="password" name="new_password_confirmation" class="form-control" id="confirmPassword" placeholder="Подтвердите новый пароль">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Обновить пароль</button>
-                    </form>
+                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

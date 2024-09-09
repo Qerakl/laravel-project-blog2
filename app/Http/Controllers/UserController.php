@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -78,9 +79,10 @@ class UserController extends Controller
 
         return redirect('/');
     }
-    public function profile(){
+    public function profile(Request $request){
         $user = $this->user->select_user(session('user.email'));
-        return view('profile', ['users' => $user]);
+        $posts = Post::where('user_id', $request->id)->orderBy('created_at', 'desc')->get();
+        return view('profile', ['users' => $user, 'posts'=> $posts]);
     }
     public function update(Request $request){
         $credentials = $request->validate([
@@ -146,6 +148,11 @@ class UserController extends Controller
                 'current_password' => 'старый пароль не совподает',
             ])->onlyInput('current_password');
         }
+    }
+
+    public function profile_edit(Request $request){
+        $user = $this->user->select_user(session('user.email'));
+        return view('updateProfile', ['users' => $user]);
     }
 
 }

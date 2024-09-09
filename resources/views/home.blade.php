@@ -10,7 +10,7 @@
                     <!-- Верхняя часть поста с аватаркой и именем пользователя -->
                     @foreach($users as $user)
                     <div class="d-flex align-items-center mb-3">
-                        <img src="{{ asset('storage/'. $user->avatar ) }}" class="rounded-circle me-3" alt="avatar" width="80" height="70">
+                        <img src="{{ asset('storage/'. $user->avatar ) }}" class="rounded-circle me-3" alt="avatar" width="60" height="60">
                         <div>
                             <h6 class="mb-0 fw-bold">{{ $user->name }}</h6>
                             <small class="text-muted">{{ $post->created_at->diffForHumans() }}</small>

@@ -115,8 +115,9 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" id="dropdownMenuButton"> {{ session('user.name') }} </a>
                         <div class="dropdown-menu" id="dropdownMenu">
-                            <a class="dropdown-item" href="{{ url('profile') }}">Профиль</a>
+                            <a class="dropdown-item" href="{{ url('profile/' . session('user.id')) }}">Профиль</a>
                             <a class="dropdown-item" href="{{ url('settings') }}">Настройки</a>
+                            <a class="dropdown-item" href="{{ url('profile/edit/' . session('user.id')) }}">Редактировать профиль </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ url('logout') }}">Выйти</a>
                         </div>
