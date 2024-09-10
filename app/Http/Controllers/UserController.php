@@ -154,5 +154,16 @@ class UserController extends Controller
         $user = $this->user->select_user(session('user.email'));
         return view('updateProfile', ['users' => $user]);
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Поиск пользователей по имени или email
+        $users = User::where('name', 'like', "%{$query}%")
+                    ->orWhere('email', 'like', "%{$query}%")
+                    ->get();
+
+        return view('follow', compact('users'));
+    }
 
 }

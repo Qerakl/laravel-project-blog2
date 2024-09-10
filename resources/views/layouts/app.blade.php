@@ -104,6 +104,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('post/create') }}">Создать пост</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url('follow')}}">Подписки</a>
+                    </li>
                     @endif
                 </ul>
                 <form class="d-flex me-3" role="search">

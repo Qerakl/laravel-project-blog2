@@ -47,7 +47,7 @@ class CommentController extends Controller
     foreach ($comments as $comment){
         $posts = Post::where('id', $comment->post_id)->get();
         foreach ($posts as $post){
-            Post::where('id', $request->id)->update([
+            Post::where('id', $post->id)->update([
                 'comments_count' => $post->comments_count-1
             ]);
         }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\CommentController;
 
 /*
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('profile/{id}', [UserController::class, 'profile']);
     Route::get('like/{id}', [LikeController::class, 'like']);
+    Route::get('follow', [UserController::class, 'search']);
     Route::get('profile/edit/{id}', [UserController::class, 'profile_edit']);
     Route::get('logout', [UserController::class, 'logout']);
     Route::post('profile/update', [UserController::class, 'update']);
